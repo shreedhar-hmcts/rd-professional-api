@@ -14,7 +14,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import uk.gov.hmcts.reform.professionalapi.infrastructure.controllers.request.OrganisationCreationRequest;
-import uk.gov.hmcts.reform.professionalapi.infrastructure.controllers.request.UserCreationRequest;
 
 public class ProfessionalReferenceDataClient {
 
@@ -31,26 +30,14 @@ public class ProfessionalReferenceDataClient {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public Map<String, Object> createOrganisation(
-            String organisationName,
-            String superUserFirstName,
-            String superUserLastName,
-            String superUserEmail
-    ) {
+            OrganisationCreationRequest organisationCreationRequest) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         headers.add("ServiceAuthorization", JWT_TOKEN);
 
-        OrganisationCreationRequest organisationCreationRequest = new OrganisationCreationRequest(
-                organisationName,
-                new UserCreationRequest(
-                        superUserFirstName,
-                        superUserLastName,
-                        superUserEmail
-                )
-        );
-
-        HttpEntity<OrganisationCreationRequest> request = new HttpEntity<>(organisationCreationRequest, headers);
+        HttpEntity<OrganisationCreationRequest> request =
+                new HttpEntity<>(organisationCreationRequest, headers);
 
         ResponseEntity<Map> responseEntity;
 
@@ -72,7 +59,7 @@ public class ProfessionalReferenceDataClient {
                 responseEntity.getBody(),
                 Map.class);
 
-        organisationResponse.put("http_status", responseEntity.getStatusCode());
+        organisationResponse.put("http_status", responseEntity.getStatusCode().toString());
 
         return organisationResponse;
     }
