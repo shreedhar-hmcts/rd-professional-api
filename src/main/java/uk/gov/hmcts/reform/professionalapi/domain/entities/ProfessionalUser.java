@@ -2,12 +2,15 @@ package uk.gov.hmcts.reform.professionalapi.domain.entities;
 
 import java.util.UUID;
 import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "professional_user")
-@Getter
 @NoArgsConstructor
+@Getter
+@Setter
 public class ProfessionalUser {
 
     @Id
